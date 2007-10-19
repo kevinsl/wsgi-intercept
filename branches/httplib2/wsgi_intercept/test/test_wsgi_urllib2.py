@@ -12,11 +12,11 @@ _saved_debuglevel = None
 
 def setup():
     _saved_debuglevel, wsgi_intercept.debuglevel = wsgi_intercept.debuglevel, 1
-    wsgi_intercept.add_wsgi_intercept('localhost', 80, test_wsgi_app.create_fn)
+    wsgi_intercept.add_wsgi_intercept('some_hopefully_nonexistant_domain', 80, test_wsgi_app.create_fn)
 
 def test():
     wsgi_urllib2.install_opener()
-    urllib2.urlopen('http://localhost:80/')
+    urllib2.urlopen('http://some_hopefully_nonexistant_domain:80/')
     assert test_wsgi_app.success()
 
 def teardown():
