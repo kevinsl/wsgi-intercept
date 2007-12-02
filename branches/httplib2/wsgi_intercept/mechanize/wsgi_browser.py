@@ -14,7 +14,6 @@ except ImportError:
     from ClientCookie import HTTPHandler
 
 import sys, os.path
-sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 from wsgi_intercept import WSGI_HTTPConnection
 
 class WSGI_HTTPHandler(HTTPHandler):
@@ -38,12 +37,12 @@ def install(browser):
     browser.handler_classes['http'] = WSGI_HTTPHandler
     # for 0.0.11a
     install_opener()
-    import mechanize._mechanize
-    _saved_UserAgent_http = mechanize._mechanize.UserAgent.handler_classes['http']
-    mechanize._mechanize.UserAgent.handler_classes['http'] = WSGI_HTTPHandler
-    
-def uninstall():
-    if _saved_UserAgent_http is not None:
-        import mechanize._mechanize
-        mechanize._mechanize.UserAgent.handler_classes['http'] = _saved_UserAgent_http
-    uninstall_opener()
+    import mechanize
+    _saved_UserAgent_http = mechanize.UserAgent.handler_classes['http']
+    mechanize.UserAgent.handler_classes['http'] = WSGI_HTTPHandler
+#     
+# def uninstall():
+#     if _saved_UserAgent_http is not None:
+#         import mechanize._mechanize
+#         mechanize._mechanize.UserAgent.handler_classes['http'] = _saved_UserAgent_http
+#     uninstall_opener()
