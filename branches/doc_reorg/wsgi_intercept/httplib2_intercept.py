@@ -1,23 +1,7 @@
 
 """intercept HTTP connections that use httplib2
 
-httplib2_ is a 3rd party extension of the built-in ``httplib``.  To intercept 
-requests, it is similar to urllib2::
-
-    >>> from wsgi_intercept.httplib2_intercept import install
-    >>> install()
-    >>> import wsgi_intercept
-    >>> from wsgi_intercept.test_wsgi_app import create_fn
-    >>> wsgi_intercept.add_wsgi_intercept('some_host', 80, create_fn)
-    >>> import httplib2
-    >>> resp, content = httplib2.Http().request('http://some_host:80/', 'GET') 
-    >>> content
-    'WSGI intercept successful!\\n'
-
-(Contributed by `David "Whit" Morris`_.)
-
-.. _httplib2: http://code.google.com/p/httplib2/
-.. _David "Whit" Morris: http://public.xdi.org/=whit
+(see wsgi_intercept/__init__.py for examples)
 
 """
 

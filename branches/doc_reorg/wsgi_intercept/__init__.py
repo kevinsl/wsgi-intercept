@@ -32,37 +32,147 @@ Unfortunately each of the Web testing frameworks uses its own specific mechanism
 urllib2
 -------
 
-.. include_docstring:: ./wsgi_intercept/urllib2/__init__.py
+urllib2_ is a standard Python module, and ``urllib2.urlopen`` is a pretty
+normal way to open URLs.
+
+The following code will install the WSGI intercept stuff as a default
+urllib2 handler: ::
+
+   >>> from wsgi_intercept.urllib2 import install_opener
+   >>> install_opener() #doctest: +ELLIPSIS
+   <urllib2.OpenerDirector instance at ...>
+   >>> import wsgi_intercept
+   >>> from wsgi_intercept.test_wsgi_app import create_fn
+   >>> wsgi_intercept.add_wsgi_intercept('some_host', 80, create_fn)
+   >>> import urllib2
+   >>> urllib2.urlopen('http://some_host:80/').read()
+   'WSGI intercept successful!\\n'
+
+The only tricky bit in there is that different handler classes need to
+be constructed for Python 2.3 and Python 2.4, because the httplib
+interface changed between those versions.
+
+.. _urllib2: http://docs.python.org/lib/module-urllib2.html
 
 httplib2
 --------
 
-.. include_docstring:: ./wsgi_intercept/httplib2_intercept.py
+httplib2_ is a 3rd party extension of the built-in ``httplib``.  To intercept 
+requests, it is similar to urllib2::
+
+    >>> from wsgi_intercept.httplib2_intercept import install
+    >>> install()
+    >>> import wsgi_intercept
+    >>> from wsgi_intercept.test_wsgi_app import create_fn
+    >>> wsgi_intercept.add_wsgi_intercept('some_host', 80, create_fn)
+    >>> import httplib2
+    >>> resp, content = httplib2.Http().request('http://some_host:80/', 'GET') 
+    >>> content
+    'WSGI intercept successful!\\n'
+
+(Contributed by `David "Whit" Morris`_.)
+
+.. _httplib2: http://code.google.com/p/httplib2/
+.. _David "Whit" Morris: http://public.xdi.org/=whit
 
 webtest
 -------
 
-.. include_docstring:: ./wsgi_intercept/webtest/__init__.py
+webtest_ is an extension to ``unittest`` that has some nice functions for
+testing Web sites.
+
+To install the WSGI intercept handler, do ::
+
+    >>> import wsgi_intercept.webtest
+    >>> class WSGI_Test(wsgi_intercept.webtest.WebCase):
+    ...     HTTP_CONN = wsgi_intercept.WSGI_HTTPConnection
+    ...     HOST='localhost'
+    ...     PORT=80
+    ... 
+    ...     def setUp(self):
+    ...         wsgi_intercept.add_wsgi_intercept(self.HOST, self.PORT, create_fn)
+    ... 
+    >>> 
+
+.. _webtest: http://www.cherrypy.org/file/trunk/cherrypy/test/webtest.py
 
 webunit
 -------
 
-.. include_docstring:: ./wsgi_intercept/webunit/__init__.py
+webunit_ is another unittest-like framework that contains nice functions
+for Web testing.  (funkload_ uses webunit, too.)
+
+webunit needed to be patched to support different scheme handlers.
+The patched package is in webunit/wsgi_webunit/, and the only
+file that was changed was webunittest.py; the original is in
+webunittest-orig.py.
+
+To install the WSGI intercept handler, do ::
+
+    >>> from httplib import HTTP
+    >>> import wsgi_intercept.webunit
+    >>> class WSGI_HTTP(HTTP):
+    ...     _connection_class = wsgi_intercept.WSGI_HTTPConnection
+    ... 
+    >>> class WSGI_WebTestCase(wsgi_intercept.webunit.WebTestCase):
+    ...     scheme_handlers = dict(http=WSGI_HTTP)
+    ... 
+    ...     def setUp(self):
+    ...         wsgi_intercept.add_wsgi_intercept('127.0.0.1', 80, create_fn)
+    ... 
+    >>> 
+
+.. _webunit: http://mechanicalcat.net/tech/webunit/
 
 mechanize
 ---------
 
-.. include_docstring:: ./wsgi_intercept/mechanize/__init__.py
+mechanize_ is John J. Lee's port of Perl's WWW::Mechanize to Python.
+It mimics a browser.  (It's also what's behind twill_.)
+
+mechanize is just as easy as mechanoid: ::
+
+   >>> import wsgi_intercept.mechanize
+   >>> from wsgi_intercept.test_wsgi_app import create_fn
+   >>> wsgi_intercept.add_wsgi_intercept('some_host', 80, create_fn)
+   >>> b = wsgi_intercept.mechanize.Browser()
+   >>> response = b.open('http://some_host:80')
+   >>> response.read()
+   'WSGI intercept successful!\\n'
+
+.. _mechanize: http://wwwsearch.sf.net/
 
 mechanoid
 ---------
 
-.. include_docstring:: ./wsgi_intercept/mechanoid/__init__.py
+mechanoid_ is a fork of mechanize_. ::
+
+   >>> import wsgi_intercept.mechanoid
+   >>> from wsgi_intercept.test_wsgi_app import create_fn
+   >>> wsgi_intercept.add_wsgi_intercept('some_host', 80, create_fn)
+   >>> b = wsgi_intercept.mechanoid.Browser()
+   >>> response = b.open('http://some_host:80')
+   >>> response.read()
+   'WSGI intercept successful!\\n'
+   
+.. _mechanoid: http://www.python.org/pypi/mechanoid/
 
 zope.testbrowser
 ----------------
 
-.. include_docstring:: ./wsgi_intercept/zope_testbrowser/__init__.py
+zope.testbrowser_ is a prettified interface to mechanize_ that is used
+primarily for testing Zope applications.
+
+zope.testbrowser is also pretty easy ::
+    
+    >>> import wsgi_intercept.zope_testbrowser
+    >>> from wsgi_intercept.test_wsgi_app import create_fn
+    >>> wsgi_intercept.add_wsgi_intercept('some_host', 80, create_fn)
+    >>> b = wsgi_intercept.zope_testbrowser.WSGI_Browser('http://some_host:80/')
+    >>> b.contents
+    'WSGI intercept successful!\\n'
+            
+.. _zope.testbrowser: http://www.python.org/pypi/zope.testbrowser
 
 History
 =======
