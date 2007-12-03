@@ -6,6 +6,13 @@ requests, it is similar to urllib2::
 
     >>> from wsgi_intercept.httplib2_intercept import install
     >>> install()
+    >>> import wsgi_intercept
+    >>> from wsgi_intercept.test_wsgi_app import create_fn
+    >>> wsgi_intercept.add_wsgi_intercept('some_host', 80, create_fn)
+    >>> import httplib2
+    >>> resp, content = httplib2.Http().request('http://some_host:80/', 'GET') 
+    >>> content
+    'WSGI intercept successful!\\n'
 
 (Contributed by `David "Whit" Morris`_.)
 

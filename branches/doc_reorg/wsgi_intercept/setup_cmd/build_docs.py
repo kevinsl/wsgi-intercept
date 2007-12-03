@@ -72,7 +72,7 @@ def splitdocfor(path):
     Example::
     
         >>> splitdocfor("./wsgi_intercept/__init__.py")[0]
-        'installs a WSGI application in place of a URI (host / port) for testing.'
+        'installs a WSGI application in place of a real URI for testing.'
         >>> splitdocfor("./wsgi_intercept/__init__.py:WSGI_HTTPConnection.get_app")[0]
         'Return the app object for the given (host, port).'
         >>> 

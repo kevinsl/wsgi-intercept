@@ -7,8 +7,10 @@ zope.testbrowser is also pretty easy ::
     
     >>> import wsgi_intercept.zope_testbrowser
     >>> from wsgi_intercept.test_wsgi_app import create_fn
-    >>> wsgi_intercept.add_wsgi_intercept('localhost', 80, create_fn)
-    >>> b = wsgi_intercept.zope_testbrowser.WSGI_Browser()
+    >>> wsgi_intercept.add_wsgi_intercept('some_host', 80, create_fn)
+    >>> b = wsgi_intercept.zope_testbrowser.WSGI_Browser('http://some_host:80/')
+    >>> b.contents
+    'WSGI intercept successful!\\n'
             
 .. _zope.testbrowser: http://www.python.org/pypi/zope.testbrowser
 
