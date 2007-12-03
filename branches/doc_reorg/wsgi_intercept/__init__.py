@@ -22,7 +22,12 @@ Install
 
 (The ``easy_install`` command is bundled with the setuptools_ module)
 
+To use a `development version`_ of wsgi_intercept, run::
+    
+    easy_install http://wsgi-intercept.googlecode.com/svn/trunk
+
 .. _setuptools: http://cheeseshop.python.org/pypi/setuptools/
+.. _development version: http://wsgi-intercept.googlecode.com/svn/trunk/#egg=wsgi_intercept-dev
 
 Packages Intercepted
 ====================
@@ -210,6 +215,7 @@ If you aren't already there, this project lives on `Google Code`_.  Please submi
 .. _Issue Tracker: http://code.google.com/p/wsgi-intercept/issues/list
 
 """
+__version__ = '0.3'
 
 import sys
 from httplib import HTTPConnection
