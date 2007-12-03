@@ -38,7 +38,7 @@ normal way to open URLs.
 The following code will install the WSGI intercept stuff as a default
 urllib2 handler: ::
 
-   >>> from wsgi_intercept.urllib2 import install_opener
+   >>> from wsgi_intercept.urllib2_intercept import install_opener
    >>> install_opener() #doctest: +ELLIPSIS
    <urllib2.OpenerDirector instance at ...>
    >>> import wsgi_intercept
@@ -83,8 +83,8 @@ testing Web sites.
 
 To install the WSGI intercept handler, do ::
 
-    >>> import wsgi_intercept.webtest
-    >>> class WSGI_Test(wsgi_intercept.webtest.WebCase):
+    >>> import wsgi_intercept.webtest_intercept
+    >>> class WSGI_Test(wsgi_intercept.webtest_intercept.WebCase):
     ...     HTTP_CONN = wsgi_intercept.WSGI_HTTPConnection
     ...     HOST='localhost'
     ...     PORT=80
@@ -110,11 +110,11 @@ webunittest-orig.py.
 To install the WSGI intercept handler, do ::
 
     >>> from httplib import HTTP
-    >>> import wsgi_intercept.webunit
+    >>> import wsgi_intercept.webunit_intercept
     >>> class WSGI_HTTP(HTTP):
     ...     _connection_class = wsgi_intercept.WSGI_HTTPConnection
     ... 
-    >>> class WSGI_WebTestCase(wsgi_intercept.webunit.WebTestCase):
+    >>> class WSGI_WebTestCase(wsgi_intercept.webunit_intercept.WebTestCase):
     ...     scheme_handlers = dict(http=WSGI_HTTP)
     ... 
     ...     def setUp(self):
@@ -132,10 +132,10 @@ It mimics a browser.  (It's also what's behind twill_.)
 
 mechanize is just as easy as mechanoid: ::
 
-   >>> import wsgi_intercept.mechanize
+   >>> import wsgi_intercept.mechanize_intercept
    >>> from wsgi_intercept.test_wsgi_app import create_fn
    >>> wsgi_intercept.add_wsgi_intercept('some_host', 80, create_fn)
-   >>> b = wsgi_intercept.mechanize.Browser()
+   >>> b = wsgi_intercept.mechanize_intercept.Browser()
    >>> response = b.open('http://some_host:80')
    >>> response.read()
    'WSGI intercept successful!\\n'
@@ -147,10 +147,10 @@ mechanoid
 
 mechanoid_ is a fork of mechanize_. ::
 
-   >>> import wsgi_intercept.mechanoid
+   >>> import wsgi_intercept.mechanoid_intercept
    >>> from wsgi_intercept.test_wsgi_app import create_fn
    >>> wsgi_intercept.add_wsgi_intercept('some_host', 80, create_fn)
-   >>> b = wsgi_intercept.mechanoid.Browser()
+   >>> b = wsgi_intercept.mechanoid_intercept.Browser()
    >>> response = b.open('http://some_host:80')
    >>> response.read()
    'WSGI intercept successful!\\n'
