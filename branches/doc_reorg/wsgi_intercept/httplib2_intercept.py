@@ -1,5 +1,18 @@
 
-"""WSGI interceptor for httplib2, written by David "Whit" Morris <d.w.morriss@gmail.com>"""
+"""intercept HTTP connections that use httplib2
+
+httplib2_ is a 3rd party extension of the built-in ``httplib``.  To intercept 
+requests, it is similar to urllib2::
+
+    >>> from wsgi_intercept.httplib2_intercept import install
+    >>> install()
+
+(Contributed by `David "Whit" Morris`_.)
+
+.. _httplib2: http://code.google.com/p/httplib2/
+.. _David "Whit" Morris: http://public.xdi.org/=whit
+
+"""
 
 import httplib2
 import wsgi_intercept

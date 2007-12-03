@@ -1,9 +1,64 @@
-"""
-wsgi_intercept.WSGI_HTTPConnection is a replacement for
-httplib.HTTPConnection that intercepts certain HTTP connections into a
-WSGI application.
 
-Use 'add_wsgi_intercept' and 'remove_wsgi_intercept' to control this behavior.
+"""installs a WSGI application in place of a URI (host / port) for testing.
+
+Pursuant to Ian Bicking's `"best Web testing framework"`_ post,
+I put together an `in-process HTTP-to-WSGI interception mechanism`_ for
+my own Web testing system, twill_.  Because the mechanism is pretty
+generic -- it works at the httplib level -- I decided to try adding it into
+all of the *other* Python Web testing frameworks.
+
+This is the result.
+
+Loosely speaking, this library lets you intercept calls to any specific
+host/port combination and redirect them into a `WSGI application`_.  Thus,
+you can avoid spawning multiple processes or threads to test your Web app.
+The interception works by subclassing httplib.HTTPConnection and installing
+it as a handler for 'http' requests; requests that aren't intercepted are
+passed on to the standard handler.
+
+Unfortunately each of the Web testing frameworks uses its own specific
+mechanism for making HTTP call-outs, so it's impossible to write something
+completely generic.  Nonetheless it's not difficult to patch or wrap any of
+the existing frameworks to support the interception behavior.
+
+Enjoy!
+
+Titus Brown, *titus@caltech.edu*, Feb 27, 2006.
+
+General Info
+============
+
+``wsgi_intercept`` works by replacing ``httplib.HTTPConnection`` with
+a subclass, ``wsgi_intercept.WSGI_HTTPConnection``.  This class then
+redirects specific server/port combinations into a WSGI application
+by emulating a socket.
+
+The functions ``add_wsgi_intercept(host, port, app_create_fn, script_name='')``
+and ``remove_wsgi_intercept(host,port)`` specify which URLs should be
+redirect into what applications.  Note especially that ``app_create_fn`` is
+a *function object* returning a WSGI application; ``script_name`` becomes
+``SCRIPT_NAME`` in the WSGI app's environment, if set.
+
+The code in this package should be treated with care & ripped off rather than
+imported or re-used! ;).  You can download it at http://darcs.idyll.org/~t/projects/wsgi_intercept-latest.tar.gz, and a darcs repository is available at
+http://darcs.idyll.org/~t/projects/wsgi_intercept/.
+
+Mocking your HTTP Server
+------------------------
+
+Marc Hedlund has gone one further, and written a full-blown mock HTTP
+server for wsgi_intercept.  Combined with wsgi_intercept itself, this
+lets you entirely replace client calls to a server with a mock setup
+that hits neither the network nor server code.  You can see his work
+in the file ``mock_http.py``.  Run ``mock_http.py`` to see a test.
+
+
+.. _twill: http://www.idyll.org/~t/www-tools/twill.html
+.. _"best Web testing framework": http://blog.ianbicking.org/best-of-the-web-app-test-frameworks.html
+.. _in-process HTTP-to-WSGI interception mechanism: http://www.advogato.org/person/titus/diary.html?start=119
+.. _WSGI application: http://www.python.org/peps/pep-0333.html
+.. _funkload: http://funkload.nuxeo.org/
+
 """
 
 import sys
