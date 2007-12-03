@@ -171,23 +171,24 @@ class publish_docs(Command):
     def run(self):        
         summary, doc = pydoc.splitdoc(wsgi_intercept.__doc__)
         wikidoc = publish_string(doc, writer=WikiWriter())
-        br = Browser()
-        br.open('http://code.google.com/p/wsgi-intercept/admin')
-        url = br.geturl()
-        assert url.startswith('https://www.google.com/accounts/Login'), (
-            "unexpected URL: %s" % url)
-        log.info("logging in to Google Code...")
-        forms = [f for f in br.forms()]
-        assert len(forms)==1, "unexpected forms: %s for %s" % (forms, br.geturl())
-        br.select_form(nr=0)
-        br['Email'] = self.google_user
-        br['Passwd'] = self.google_password
-        admin = br.submit()
-        url = admin.geturl()
-        assert url=='http://code.google.com/p/wsgi-intercept/admin', (
-            "unexpected URL: %s" % url) 
-        br.select_form(nr=0)
-        br['projectdescription'] = wikidoc
-        br.submit()
-        print br.geturl()
+        print wikidoc
+        # br = Browser()
+        # br.open('http://code.google.com/p/wsgi-intercept/admin')
+        # url = br.geturl()
+        # assert url.startswith('https://www.google.com/accounts/Login'), (
+        #     "unexpected URL: %s" % url)
+        # log.info("logging in to Google Code...")
+        # forms = [f for f in br.forms()]
+        # assert len(forms)==1, "unexpected forms: %s for %s" % (forms, br.geturl())
+        # br.select_form(nr=0)
+        # br['Email'] = self.google_user
+        # br['Passwd'] = self.google_password
+        # admin = br.submit()
+        # url = admin.geturl()
+        # assert url=='http://code.google.com/p/wsgi-intercept/admin', (
+        #     "unexpected URL: %s" % url) 
+        # br.select_form(nr=0)
+        # br['projectdescription'] = wikidoc
+        # br.submit()
+        # print br.geturl()
         
