@@ -6,3 +6,4 @@ Kumar McMillan
 CONTRIBUTORS
 
 David "Whit" Morris
+Jeffrey Cousens

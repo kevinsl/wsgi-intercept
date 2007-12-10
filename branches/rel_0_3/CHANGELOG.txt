@@ -1,0 +1,11 @@
+
+0.3.1
+-----
+
+- issue3: made urllib2 intercept compatible with python 2.5 (patch by Jeffrey Cousens)
+
+
+0.3
+---
+
+- first release
