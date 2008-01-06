@@ -1,4 +1,9 @@
 
+0.3.2
+-----
+
+- issue7: fixed masked exception in httplib2 (patch by Gary Bernhardt)
+
 0.3.1
 -----
 
