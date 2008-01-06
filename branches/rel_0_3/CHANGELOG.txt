@@ -3,6 +3,7 @@
 -----
 
 - issue7: fixed masked exception in httplib2 (patch by Gary Bernhardt)
+- issue8: fixed missing QUERY_STRING in WSGI environment and un-closed WSGI iterator (patch by Gary Bernhardt)
 
 0.3.1
 -----
