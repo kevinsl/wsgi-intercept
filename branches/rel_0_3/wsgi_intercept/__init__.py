@@ -215,7 +215,7 @@ If you aren't already there, this project lives on `Google Code`_.  Please submi
 .. _Issue Tracker: http://code.google.com/p/wsgi-intercept/issues/list
 
 """
-__version__ = '0.3.3'
+__version__ = '0.3.4'
 
 import sys
 from httplib import HTTPConnection
