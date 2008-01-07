@@ -52,7 +52,7 @@ class WikiVisitor(SparseNodeVisitor):
         if self.list_depth == 0:
             self.list_item_prefix = None
         else:
-            self.list_item_prefix = (' ' * self.list_depth) + '* '
+            (' ' * self.list_depth) + '* '
         self.output.append('\n\n')
                            
     def visit_list_item(self, node):
@@ -82,9 +82,7 @@ class WikiVisitor(SparseNodeVisitor):
         self.output.append(self.indent)
         
     def depart_paragraph(self, node):
-        self.output.append('\n')
-        if not isinstance(node.parent, nodes.list_item):
-            self.output.append('\n')
+        self.output.append('\n\n')
         if self.indent == self.list_item_prefix:
             # we're in a sub paragraph of a list item
             self.indent = ' ' * self.list_depth
@@ -174,9 +172,6 @@ class publish_docs(Command):
         summary, doc = pydoc.splitdoc(wsgi_intercept.__doc__)
         wikidoc = publish_string(doc, writer=WikiWriter())
         print wikidoc
-        
-        ## Google html is so broken that this isn't working :/
-        
         # br = Browser()
         # br.open('http://code.google.com/p/wsgi-intercept/admin')
         # url = br.geturl()
